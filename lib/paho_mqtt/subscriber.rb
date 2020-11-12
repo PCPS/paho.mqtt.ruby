@@ -70,7 +70,7 @@ module PahoMqtt
         end
       else
         PahoMqtt.logger.error("The packet id is invalid, already used.") if PahoMqtt.logger?
-        raise PacketException.new("Invalid suback packet id: #{packet_id} waiting_suback size: #{@waiting_suback.length}")
+        raise PacketException.new("Invalid suback packet id: #{packet_id} adjust_qos size: #{adjust_qos.length} waiting_suback size: #{@waiting_suback.length}")
       end
       @subscribed_mutex.synchronize do
         @subscribed_topics.concat(adjust_qos)
