@@ -220,8 +220,10 @@ module PahoMqtt
         @connection_state = MQTT_CS_DISCONNECT
       end
       if explicit && @clean_session
-        @last_packet_id = 0
-        @subscriber.clear_queue
+        @id_mutex.synchronize do
+          @last_packet_id = 0
+          @subscriber.clear_queue
+        end
       end
       MQTT_ERR_SUCCESS
     end
