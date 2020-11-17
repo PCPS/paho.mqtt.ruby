@@ -22,7 +22,7 @@ module PahoMqtt
   extend self
   attr_accessor :logger
 
-  MAX_PACKET_ID = 65535
+  MAX_PACKET_ID = 4294967296
 
   # Default connection setup
   DEFAULT_SSL_PORT      = 8883
