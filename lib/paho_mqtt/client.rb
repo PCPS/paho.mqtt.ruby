@@ -220,11 +220,8 @@ module PahoMqtt
         @connection_state = MQTT_CS_DISCONNECT
       end
       if explicit && @clean_session
-        @id_mutex.synchronize do
-          PahoMqtt.logger.error("Will reset queue due to disconnect") if PahoMqtt.logger?
-          @last_packet_id = 0
-          @subscriber.clear_queue
-        end
+        @last_packet_id = 0
+        @subscriber.clear_queue
       end
       MQTT_ERR_SUCCESS
     end
