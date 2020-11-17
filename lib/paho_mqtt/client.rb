@@ -221,6 +221,7 @@ module PahoMqtt
       end
       if explicit && @clean_session
         @id_mutex.synchronize do
+          PahoMqtt.logger.error("Will reset queue due to disconnect") if PahoMqtt.logger?
           @last_packet_id = 0
           @subscriber.clear_queue
         end
