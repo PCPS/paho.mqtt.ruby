@@ -53,6 +53,7 @@ module PahoMqtt
     end
 
     def add_subscription(max_qos, packet_id, adjust_qos)
+      puts "#{max_qos} #{packet_id}"
       @suback_mutex.synchronize do
         adjust_qos, @waiting_suback = @waiting_suback.partition { |pck| pck[:id] == packet_id }
       end
@@ -69,7 +70,7 @@ module PahoMqtt
           end
         end
       else
-        PahoMqtt.logger.warb("The packet id #{packet_id} is invalid, already used.") if PahoMqtt.logger?
+        PahoMqtt.logger.warn("The packet id #{packet_id} is invalid, already used.") if PahoMqtt.logger?
         return []
       end
       @subscribed_mutex.synchronize do
