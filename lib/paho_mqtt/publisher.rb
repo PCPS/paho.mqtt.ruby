@@ -31,7 +31,7 @@ module PahoMqtt
       @sender = sender
     end
 
-    def send_publish(topic, payload, retain, qos, new_id)
+    def send_publish(topic, payload, retain, qos, new_id, tries = 0)
       packet = PahoMqtt::Packet::Publish.new(
         :id      => new_id,
         :topic   => topic,
@@ -48,8 +48,11 @@ module PahoMqtt
         end
       rescue FullQueueException
         PahoMqtt.logger.warn("PUBLISH queue is full, waiting for publishing #{packet.inspect}") if PahoMqtt.logger?
+        tries += 1
+        unless tries >= 5
         sleep SELECT_TIMEOUT
         retry
+        end
       end
       @sender.append_to_writing(packet)
       MQTT_ERR_SUCCESS
